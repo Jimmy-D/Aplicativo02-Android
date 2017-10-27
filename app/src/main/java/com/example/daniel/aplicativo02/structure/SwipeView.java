@@ -12,6 +12,7 @@ import android.view.View;
 public class SwipeView extends View {
     private Point       mDimensions = new Point();
     private Stepwatch   mStepwatch = new Stepwatch();
+    private boolean     mHasStarted;
 
     public SwipeView(Context context) {
         super(context);
@@ -19,17 +20,25 @@ public class SwipeView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        step(canvas, mStepwatch.tick());
-//
-//        invalidate();
+        step(canvas, mStepwatch.tick());
+
+        invalidate();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mDimensions.set(w, h);
+
+        if (!mHasStarted) {
+            setup();
+            mHasStarted = true;
+        }
     }
 
     public void step(Canvas canvas, float elapsedTimeInSeconds) {
+    }
+
+    public void step(Canvas canvas) {
     }
 
     public void setup() {
