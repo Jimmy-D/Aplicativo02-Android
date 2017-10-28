@@ -3,6 +3,8 @@ package com.example.daniel.aplicativo02.structure;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.RectF;
 
 import com.example.daniel.aplicativo02.BallGenerator;
 
@@ -30,7 +32,7 @@ public class Renderer {
         }
     }
 
-    public void drawBall(Point position, float radius, int color) {
+    public void drawBall(PointF position, float radius, int color) {
         mTempPaint.setColor(color);
         mTempPaint.setStyle(Paint.Style.FILL);
         mTempCanvas.drawCircle(position.x, position.y, radius, mTempPaint);
@@ -41,5 +43,14 @@ public class Renderer {
         mTempPaint.setStyle(Paint.Style.FILL);
         mTempCanvas.drawCircle(ball.getPosition().x, ball.getPosition().y,
                 ball.getRadius(), mTempPaint);
+    }
+
+    public void drawFrame(RectF insideFrame, float width, int insideColor, int frameColor) {
+        mTempPaint.setColor(frameColor);
+        mTempPaint.setStyle(Paint.Style.FILL);
+        mTempCanvas.drawRect(insideFrame.left - width, insideFrame.top - width,
+                insideFrame.right + width, insideFrame.bottom + width, mTempPaint);
+        mTempPaint.setColor(insideColor);
+        mTempCanvas.drawRect(insideFrame, mTempPaint);
     }
 }

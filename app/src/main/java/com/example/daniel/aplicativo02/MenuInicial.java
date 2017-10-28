@@ -29,8 +29,8 @@ public class MenuInicial extends ListActivity {
             case 0:
                 startActivity(new Intent(this, Swipe01.class));
                 break;
-//            case 1:
-//                startActivity(new Intent(this, Swipe02.class));
+            case 1:
+                startActivity(new Intent(this, Swipe02.class));
 //                break;
 //            case 2:
 //                startActivity(new Intent(this, Swipe03.class));

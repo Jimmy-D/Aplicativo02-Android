@@ -50,12 +50,6 @@ public class View01 extends SwipeView {
         mRenderer.drawAllBalls(mBallGenerator2.getBalls());
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-    }
-
     public BallGenerator getBallGenerator1() {
         return mBallGenerator1;
     }
