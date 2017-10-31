@@ -11,16 +11,13 @@ public class PoolBall {
     private PointF      mVelocity = new PointF();
     private float       mRadius;
     private int         mColor;
-    private boolean     mIsClickable;
     private boolean     mIsPressed;
     private int         mNumber;
 
-    public PoolBall(PointF initialPosition, float radius, int color, boolean isClickable,
-                    int number) {
+    public PoolBall(PointF initialPosition, float radius, int color, int number) {
         mPosition = initialPosition;
         mRadius = radius;
         mColor = color;
-        mIsClickable = isClickable;
         mNumber = number;
 
         mVelocity.set(0, 0);
@@ -48,11 +45,17 @@ public class PoolBall {
     public void setPosition(PointF position) {
         mPosition = position;
     }
+    public void setPosition(float Px, float Py) {
+        mPosition.set(Px, Py);
+    }
     public PointF getVelocity() {
         return mVelocity;
     }
     public void setVelocity(PointF velocity) {
         mVelocity = velocity;
+    }
+    public void setVelocity(float Vx, float Vy) {
+        mVelocity.set(Vx, Vy);
     }
     public void setIsPressed(boolean isPressed) {
         mIsPressed = isPressed;

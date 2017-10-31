@@ -14,9 +14,8 @@ public class PoolBallManager {
     public PoolBallManager() {
     }
 
-    public PoolBall createBall(PointF initialPosition, float radius, int color, boolean isClickable,
-                           int number) {
-        PoolBall ball = new PoolBall(initialPosition, radius, color, isClickable, number);
+    public PoolBall createBall(PointF initialPosition, float radius, int color, int number) {
+        PoolBall ball = new PoolBall(initialPosition, radius, color, number);
         mBallList.add(ball);
         return ball;
     }
