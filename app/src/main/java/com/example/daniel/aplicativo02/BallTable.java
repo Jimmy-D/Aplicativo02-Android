@@ -42,13 +42,17 @@ public class BallTable {
         if (isPressed()) {
             _collisionTest(mBallPosition);
         } else {
-            mBallPosition.set(mBallPosition.x + mBallVelocity.x * elapsedTimeInSeconds,
-                    mBallPosition.y + mBallVelocity.y * elapsedTimeInSeconds);
-            mBallVelocity.set(mBallVelocity.x + mBallAceleration.x,
-                    mBallVelocity.y + mBallAceleration.y);
-            if (mBallVelocity.length() < mBallAceleration.length()) {
-                mBallVelocity.set(0, 0);
-                mBallAceleration.set(0, 0);
+            if (mBallVelocity.length() != 0) {
+                mBallPosition.set(mBallPosition.x + mBallVelocity.x * elapsedTimeInSeconds,
+                        mBallPosition.y + mBallVelocity.y * elapsedTimeInSeconds);
+//                mBallVelocity.set(mBallVelocity.x + mBallAceleration.x,
+//                        mBallVelocity.y + mBallAceleration.y);
+                mBallVelocity.set(mBallVelocity.x * 0.95f, mBallVelocity.y * 0.95f);
+//                if (mBallVelocity.length() < mBallAceleration.length()) {
+                if (mBallVelocity.length() < 0.1) {
+                    mBallVelocity.set(0, 0);
+                    mBallAceleration.set(0, 0);
+                }
             }
             _collisionResult();
         }

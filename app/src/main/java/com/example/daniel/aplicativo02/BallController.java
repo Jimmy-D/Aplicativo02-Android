@@ -51,11 +51,12 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if (mWasPressed) {
             mTempVelocity.set(velocityX, velocityY);
-            mTable.setBallVelocity(mTempVelocity);
-            float lenght = mTempVelocity.length();
-            mTempAceleration.set(-(mTempVelocity.x / lenght) * BallTable.BALL_ACELERATION,
-                    -(mTempVelocity.y / lenght) * BallTable.BALL_ACELERATION);
-            mTable.setBallAceleration(mTempAceleration);
+//            mTable.setBallVelocity(mTempVelocity);
+//            float lenght = mTempVelocity.length();
+//            mTempAceleration.set(-(mTempVelocity.x / lenght) * BallTable.BALL_ACELERATION,
+//                    -(mTempVelocity.y / lenght) * BallTable.BALL_ACELERATION);
+//            mTable.setBallAceleration(mTempAceleration);
+
         }
         return true;
     }
@@ -67,7 +68,7 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
         if (mTable.IsPressed(mTempPosition)) {
             mTable.setIsPressed(true);
             mTempVelocity.set(0, 0);
-            mTempAceleration.set(0, 0);
+//            mTempAceleration.set(0, 0);
             mTable.setBallVelocity(mTempVelocity);
             mTable.resetCollisions();
             mWasPressed = true;

@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.daniel.aplicativo02.pool.PoolActivity;
+
 public class MenuInicial extends ListActivity {
 
     private static final String[] atividades = new String[] {
@@ -31,10 +33,10 @@ public class MenuInicial extends ListActivity {
                 break;
             case 1:
                 startActivity(new Intent(this, Swipe02.class));
-//                break;
-//            case 2:
-//                startActivity(new Intent(this, Swipe03.class));
-//                break;
+                break;
+            case 2:
+                startActivity(new Intent(this, PoolActivity.class));
+                break;
             default:
                 finish();
         }

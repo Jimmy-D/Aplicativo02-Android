@@ -22,6 +22,9 @@
         <activity
             android:name=".Swipe02"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".pool.PoolActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
