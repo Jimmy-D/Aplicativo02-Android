@@ -72,6 +72,50 @@ public class Renderer2 {
         }
     }
 
+    public void drawWall(Wall wall) {
+        if (mViewport != null) {
+            Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
+            PointF scallingFactor = mViewport.getScalingFactor();
+
+            mTempPaint.setColor(wall.getDebugColor());
+            mTempPaint.setStyle(Paint.Style.FILL);
+            mTempCanvas.drawLine(wall.getInicialPoint().x * scallingFactor.x + offsetFromOrigin.x,
+                    wall.getInicialPoint().y * scallingFactor.y + offsetFromOrigin.y,
+                    wall.getFinalPoint().x * scallingFactor.x + offsetFromOrigin.x,
+                    wall.getFinalPoint().y * scallingFactor.y + offsetFromOrigin.y,
+                    mTempPaint);
+        }
+    }
+
+    public void drawAllWalls(ArrayList<Wall> list) {
+        for (Wall wall : list) {
+            drawWall(wall);
+        }
+    }
+
+    public void drawPocket(PoolPocket pocket) {
+        if (mViewport != null) {
+            Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
+            PointF scallingFactor = mViewport.getScalingFactor();
+
+            mTempPosition.set(pocket.getPosition().x * scallingFactor.x + offsetFromOrigin.x,
+                    pocket.getPosition().y * scallingFactor.y + offsetFromOrigin.y);
+            mTempRadius = pocket.getRadius() * scallingFactor.x;
+
+            mTempPaint.setColor(pocket.getDebugColor());
+            mTempPaint.setStyle(Paint.Style.FILL);
+            mTempCanvas.drawCircle(mTempPosition.x, mTempPosition.y, mTempRadius,
+                    mTempPaint);
+        }
+
+    }
+
+    public void drawAllPockets(ArrayList<PoolPocket> list) {
+        for (PoolPocket pocket : list) {
+            drawPocket(pocket);
+        }
+    }
+
     public void setViewport(Viewport viewport) {
         mViewport = viewport;
     }

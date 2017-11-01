@@ -14,7 +14,7 @@ public class MenuInicial extends ListActivity {
     private static final String[] atividades = new String[] {
             "swipe 1",
             "swipe 2",
-            "swipe 3",
+            "Pool",
             "sair"
     };
 

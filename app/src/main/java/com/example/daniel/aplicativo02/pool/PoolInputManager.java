@@ -59,6 +59,7 @@ public class PoolInputManager extends GestureDetector.SimpleOnGestureListener{
         mTempPosition.set(e.getX() / mScallingFactor.x - mOffsetFromOrigin.x,
                 e.getY() / mScallingFactor.y - mOffsetFromOrigin.y);
         if (mTable.getWhiteBall().isPressed(mTempPosition)) {
+            mTempVelocity.set(0, 0);
             mTable.getWhiteBall().setVelocity(mTempVelocity);
             mWasPressed = true;
         } else {

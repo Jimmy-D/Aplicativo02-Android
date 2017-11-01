@@ -20,12 +20,8 @@ public class PoolBallManager {
         return ball;
     }
 
-    public void deleteBall(int number) {
-        for (PoolBall ball : mBallList) {
-            if (ball.getNumber() == number) {
-                mBallList.remove(ball);
-            }
-        }
+    public void deleteBall(PoolBall ball) {
+        mBallList.remove(ball);
     }
 
     public ArrayList<PoolBall> getBallList() {

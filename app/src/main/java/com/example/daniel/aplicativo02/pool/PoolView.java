@@ -17,6 +17,7 @@ public class PoolView extends SwipeView {
     private ImageFactory    mImageFactory;
     private PoolTable       mTable;
     private Image           mImgTable;
+    private boolean         mIsDebug = false;
 
     public PoolView(Context context, PoolTable table) {
         super(context);
@@ -33,6 +34,11 @@ public class PoolView extends SwipeView {
 
         mRenderer.drawBackgroundImage(mImgTable);
         mRenderer.drawAllBalls(mTable.getBallManager().getBallList());
+
+        if (mIsDebug) {
+            mRenderer.drawAllWalls(mTable.getWallList());
+            mRenderer.drawAllPockets(mTable.getPocketList());
+        }
     }
 
     @Override
