@@ -20,6 +20,10 @@ public class PoolBallManager {
         return ball;
     }
 
+    public void addBall(PoolBall ball) {
+        mBallList.add(ball);
+    }
+
     public void deleteBall(PoolBall ball) {
         mBallList.remove(ball);
     }

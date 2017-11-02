@@ -45,7 +45,8 @@ public class PoolInputManager extends GestureDetector.SimpleOnGestureListener{
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if (mWasPressed) {
             if (mTable.hasNoMovement()) {
-                mTempVelocity.set(velocityX / mScallingFactor.x, velocityY / mScallingFactor.y);
+                mTempVelocity.set(velocityX / (mScallingFactor.x * 3),
+                        velocityY / (mScallingFactor.y * 3));
             }
         }
         return true;

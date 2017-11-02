@@ -24,9 +24,9 @@ public class PoolBall {
     }
 
     public boolean isPressed(PointF position) {
-        if (position.y > mPosition.y - mRadius &&
-                position.y < mPosition.y + mRadius) {
-            float x = (float) Math.sqrt(mRadius * mRadius -
+        if (position.y > mPosition.y - 3 * mRadius &&
+                position.y < mPosition.y + 3 * mRadius) {
+            float x = (float) Math.sqrt(mRadius * mRadius * 9 -
                     (position.y - mPosition.y) * (position.y - mPosition.y));
             if (position.x > mPosition.x - x && position.x < mPosition.x + x) {
                 mIsPressed = true;

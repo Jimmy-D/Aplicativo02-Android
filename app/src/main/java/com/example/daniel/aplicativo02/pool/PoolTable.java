@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class PoolTable {
     public static final float       BALL_RADIUS = 16.0f;
     public static final float       POCKET_RADIUS = 40.0f;
-    public static final float       COR = 0.95f; // Coefficient of Restitution
+    public static final float       COR = 0.98f; // Coefficient of Restitution
     public static final float       WALL_COR = 0.95f;
-    public static final float       DESACELATION_RATIO = 0.98f;
+    public static final float       DESACELATION_RATIO = 0.985f;
 
     private Point                   mDimensions;
     private PointF                  mTempDistanceVector = new PointF();
@@ -87,13 +87,14 @@ public class PoolTable {
             if (mDeletedBall == mWhiteBall) {
                 if (!mWaiting) {
                     mBallManager.deleteBall(mDeletedBall);
-                    mDeletedBall = null;
                     mWaiting = true;
                 }
                 if (hasNoMovement()) {
-                    mWhiteBall = mBallManager.createBall(new PointF(795, 300), BALL_RADIUS,
-                            Color.WHITE, 0);
+                    mBallManager.addBall(mWhiteBall);
+                    mWhiteBall.setPosition(795, 300);
+                    mWhiteBall.setVelocity(0, 0);
                     mWaiting = false;
+                    mDeletedBall = null;
                 }
 
             } else {
