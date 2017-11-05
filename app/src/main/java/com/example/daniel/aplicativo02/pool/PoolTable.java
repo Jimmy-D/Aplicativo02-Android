@@ -15,16 +15,22 @@ public class PoolTable {
     public static final float       POCKET_RADIUS = 40.0f;
     public static final float       COR = 0.98f; // Coefficient of Restitution
     public static final float       WALL_COR = 0.95f;
-    public static final float       DESACELATION_RATIO = 0.985f;
+    public static final float       DESACELATION_RATIO = 0.986f;
 
     private Point                   mDimensions;
     private PointF                  mTempDistanceVector = new PointF();
+    private PointF                  mTempStickDirection = new PointF();
+    private boolean                 mBallWasHit;
+    private boolean                 mWillBePocketed;
+    private float                   mDistanceWhenHit;
 
     private PoolBallManager         mBallManager;
     private PoolBall                mWhiteBall;
+    private PoolBall                mInvisibleBall;
     private ArrayList<Wall>         mWallList = new ArrayList<Wall>();
     private ArrayList<PoolPocket>   mPocketList = new ArrayList<PoolPocket>();
     private PoolBall                mDeletedBall;
+    private CueStick                mStick;
     private boolean                 mWaiting;
 
     public PoolTable(Point dimensions) {
@@ -76,6 +82,10 @@ public class PoolTable {
         mPocketList.add(new PoolPocket(new PointF(40, 560), POCKET_RADIUS));
         mPocketList.add(new PoolPocket(new PointF(547, 586), POCKET_RADIUS));
         mPocketList.add(new PoolPocket(new PointF(1054, 560), POCKET_RADIUS));
+
+        mStick = new CueStick(new PointF(500, 30));
+
+        mInvisibleBall = new PoolBall(new PointF(), BALL_RADIUS, Color.LTGRAY, 20);
     }
 
     public void step(float elapsedTimeInSeconds) {
@@ -108,7 +118,7 @@ public class PoolTable {
                     ball.getPosition().y + ball.getVelocity().y * elapsedTimeInSeconds);
             ball.getVelocity().set(ball.getVelocity().x * DESACELATION_RATIO,
                     ball.getVelocity().y * DESACELATION_RATIO);
-            if (ball.getVelocity().length() < 1) {
+            if (ball.getVelocity().length() < 4) {
                 ball.getVelocity().set(0, 0);
             }
             for (PoolBall ball2 : mBallManager.getBallList()) {
@@ -236,6 +246,42 @@ public class PoolTable {
         return true;
     }
 
+    public void hitBall() {
+        mDistanceWhenHit = mStick.getDistanceToPoint();
+        mBallWasHit = true;
+        mStick.setIsActive(false);
+    }
+
+    public void startMoving() {
+        mWhiteBall.setVelocity(mTempStickDirection.x * mDistanceWhenHit * 16,
+                mTempStickDirection.y * mDistanceWhenHit * 16);
+        mBallWasHit = false;
+    }
+
+    public void setInvisibleBallPosition() {
+        mInvisibleBall.setPosition(mWhiteBall.getPosition().x, mWhiteBall.getPosition().y);
+        mInvisibleBall.setVelocity(mTempStickDirection.x, mTempStickDirection.y);
+        while (mInvisibleBall.getPosition().x > 0 || mInvisibleBall.getPosition().x < mDimensions.x
+                || mInvisibleBall.getPosition().y > 0
+                || mInvisibleBall.getPosition().y < mDimensions.y) {
+            mInvisibleBall.setPosition(mInvisibleBall.getPosition().x + mTempStickDirection.x,
+                    mInvisibleBall.getPosition().y + mTempStickDirection.y);
+            for (PoolBall ball : mBallManager.getBallList()) {
+                if (colidedWithBall(mInvisibleBall, ball)) {
+                    mWillBePocketed = false;
+                    return;
+                }
+            }
+            for (Wall wall : mWallList) {
+                if (colidedWithWall(mInvisibleBall, wall)) {
+                    mWillBePocketed = false;
+                    return;
+                }
+            }
+        }
+        mWillBePocketed = true;
+    }
+
     private float _dotOperation(PointF x, PointF y) {
         float result = x.x * y.x + x.y * y.y;
         return result;
@@ -256,5 +302,25 @@ public class PoolTable {
     }
     public ArrayList<PoolPocket> getPocketList() {
         return mPocketList;
+    }
+    public CueStick getStick() { return  mStick; }
+    public boolean ballWasHit() {
+        return mBallWasHit;
+    }
+    public void setBallWasHit(boolean ballWasHit) {
+        mBallWasHit = ballWasHit;
+    }
+    public PointF getTempVelocityDirection() {
+        return mTempStickDirection;
+    }
+    public void setTempStickDirection(PointF direction) {
+        mTempStickDirection.set(direction.x / direction.length(),
+                direction.y / direction.length());
+    }
+    public PoolBall getInvisibleBall() {
+        return mInvisibleBall;
+    }
+    public boolean willBePocketed() {
+        return mWillBePocketed;
     }
 }

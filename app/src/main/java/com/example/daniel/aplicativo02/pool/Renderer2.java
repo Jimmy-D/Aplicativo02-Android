@@ -2,9 +2,11 @@ package com.example.daniel.aplicativo02.pool;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Build;
 
@@ -22,6 +24,8 @@ public class Renderer2 {
     private float mTempRadius;
     private Paint mTempPaint = new Paint();
     private Viewport    mViewport;
+    private RectF mTempDstRect = new RectF();
+    private PointF mTempPointOfRotation = new PointF();
 
     public Renderer2() {
     }
@@ -49,17 +53,17 @@ public class Renderer2 {
         }
     }
 
-    public void drawBall(PoolBall ball) {
+    public void drawBall(PoolBall ball, Paint.Style style) {
         if (mViewport != null) {
             Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
-            PointF scallingFactor = mViewport.getScalingFactor();
+            PointF scalingFactor = mViewport.getScalingFactor();
 
-            mTempPosition.set(ball.getPosition().x * scallingFactor.x + offsetFromOrigin.x,
-                    ball.getPosition().y * scallingFactor.y + offsetFromOrigin.y);
-            mTempRadius = ball.getRadius() * scallingFactor.x;
+            mTempPosition.set(ball.getPosition().x * scalingFactor.x + offsetFromOrigin.x,
+                    ball.getPosition().y * scalingFactor.y + offsetFromOrigin.y);
+            mTempRadius = ball.getRadius() * scalingFactor.x;
 
             mTempPaint.setColor(ball.getColor());
-            mTempPaint.setStyle(Paint.Style.FILL);
+            mTempPaint.setStyle(style);
             mTempCanvas.drawCircle(mTempPosition.x, mTempPosition.y, mTempRadius,
                     mTempPaint);
         }
@@ -68,21 +72,21 @@ public class Renderer2 {
 
     public void drawAllBalls(ArrayList<PoolBall> list) {
         for (PoolBall ball : list) {
-            drawBall(ball);
+            drawBall(ball, Paint.Style.FILL);
         }
     }
 
     public void drawWall(Wall wall) {
         if (mViewport != null) {
             Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
-            PointF scallingFactor = mViewport.getScalingFactor();
+            PointF scalingFactor = mViewport.getScalingFactor();
 
             mTempPaint.setColor(wall.getDebugColor());
             mTempPaint.setStyle(Paint.Style.FILL);
-            mTempCanvas.drawLine(wall.getInicialPoint().x * scallingFactor.x + offsetFromOrigin.x,
-                    wall.getInicialPoint().y * scallingFactor.y + offsetFromOrigin.y,
-                    wall.getFinalPoint().x * scallingFactor.x + offsetFromOrigin.x,
-                    wall.getFinalPoint().y * scallingFactor.y + offsetFromOrigin.y,
+            mTempCanvas.drawLine(wall.getInicialPoint().x * scalingFactor.x + offsetFromOrigin.x,
+                    wall.getInicialPoint().y * scalingFactor.y + offsetFromOrigin.y,
+                    wall.getFinalPoint().x * scalingFactor.x + offsetFromOrigin.x,
+                    wall.getFinalPoint().y * scalingFactor.y + offsetFromOrigin.y,
                     mTempPaint);
         }
     }
@@ -96,11 +100,11 @@ public class Renderer2 {
     public void drawPocket(PoolPocket pocket) {
         if (mViewport != null) {
             Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
-            PointF scallingFactor = mViewport.getScalingFactor();
+            PointF scalingFactor = mViewport.getScalingFactor();
 
-            mTempPosition.set(pocket.getPosition().x * scallingFactor.x + offsetFromOrigin.x,
-                    pocket.getPosition().y * scallingFactor.y + offsetFromOrigin.y);
-            mTempRadius = pocket.getRadius() * scallingFactor.x;
+            mTempPosition.set(pocket.getPosition().x * scalingFactor.x + offsetFromOrigin.x,
+                    pocket.getPosition().y * scalingFactor.y + offsetFromOrigin.y);
+            mTempRadius = pocket.getRadius() * scalingFactor.x;
 
             mTempPaint.setColor(pocket.getDebugColor());
             mTempPaint.setStyle(Paint.Style.FILL);
@@ -113,6 +117,63 @@ public class Renderer2 {
     public void drawAllPockets(ArrayList<PoolPocket> list) {
         for (PoolPocket pocket : list) {
             drawPocket(pocket);
+        }
+    }
+
+    public void drawImage(Image image, PointF worldDestination,
+                          PointF dstDimensions) {
+        if (mViewport != null) {
+            Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
+            PointF scalingFactor = mViewport.getScalingFactor();
+
+            mTempDstRect.left = (worldDestination.x * scalingFactor.x) + offsetFromOrigin.x;
+            mTempDstRect.top = (worldDestination.y * scalingFactor.y) + offsetFromOrigin.y;
+            mTempDstRect.right = ((worldDestination.x + dstDimensions.x)
+                    * scalingFactor.x) + offsetFromOrigin.x;
+            mTempDstRect.bottom = ((worldDestination.y + dstDimensions.y)
+                    * scalingFactor.y) + offsetFromOrigin.y;
+
+            if (image != null) {
+                Bitmap bitmap = image.getBitmap();
+                mTempCanvas.drawBitmap(bitmap, null, mTempDstRect, mTempPaint);
+            }
+        }
+    }
+
+    public void drawImage(Image image, PointF worldDestination,float scale, float rotationCW,
+                          PointF pointOfRotation) {
+        if (mViewport != null) {
+            Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
+            PointF scalingFactor = mViewport.getScalingFactor();
+            Matrix matrix = new Matrix();
+
+            mTempPosition.set(worldDestination.x * scalingFactor.x + offsetFromOrigin.x,
+                    worldDestination.y * scalingFactor.y + offsetFromOrigin.y);
+            mTempPointOfRotation.set(pointOfRotation.x * scalingFactor.x + offsetFromOrigin.x,
+                    pointOfRotation.y * scalingFactor.y + offsetFromOrigin.y);
+            matrix.setTranslate(mTempPosition.x, mTempPosition.y);
+            matrix.preScale(scalingFactor.x * scale, scalingFactor.y * scale);
+            matrix.postRotate(rotationCW, mTempPointOfRotation.x, mTempPointOfRotation.y);
+
+            if (image != null) {
+                Bitmap bitmap = image.getBitmap();
+                mTempCanvas.drawBitmap(bitmap, matrix, mTempPaint);
+            }
+        }
+    }
+
+    public void drawLine(PointF initial, PointF end, int color) {
+        if (mViewport != null) {
+            Point offsetFromOrigin = mViewport.getOffsetFromOrigin();
+            PointF scalingFactor = mViewport.getScalingFactor();
+
+            mTempPaint.setColor(color);
+            mTempPaint.setStyle(Paint.Style.FILL);
+            mTempCanvas.drawLine(initial.x * scalingFactor.x + offsetFromOrigin.x,
+                    initial.y * scalingFactor.y + offsetFromOrigin.y,
+                    end.x * scalingFactor.x + offsetFromOrigin.x,
+                    end.y * scalingFactor.y + offsetFromOrigin.y,
+                    mTempPaint);
         }
     }
 
