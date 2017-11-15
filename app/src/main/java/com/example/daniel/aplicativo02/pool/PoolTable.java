@@ -264,8 +264,8 @@ public class PoolTable {
         while (mInvisibleBall.getPosition().x > 0 || mInvisibleBall.getPosition().x < mDimensions.x
                 || mInvisibleBall.getPosition().y > 0
                 || mInvisibleBall.getPosition().y < mDimensions.y) {
-            mInvisibleBall.setPosition(mInvisibleBall.getPosition().x + mTempStickDirection.x,
-                    mInvisibleBall.getPosition().y + mTempStickDirection.y);
+            mInvisibleBall.setPosition(mInvisibleBall.getPosition().x +  mTempStickDirection.x,
+                    mInvisibleBall.getPosition().y +  mTempStickDirection.y);
             for (PoolBall ball : mBallManager.getBallList()) {
                 if (colidedWithBall(mInvisibleBall, ball)) {
                     mWillBePocketed = false;

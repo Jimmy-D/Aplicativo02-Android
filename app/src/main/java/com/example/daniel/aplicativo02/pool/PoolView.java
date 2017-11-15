@@ -40,12 +40,6 @@ public class PoolView extends SwipeView {
         mRenderer.drawBackgroundImage(mImgTable);
         mRenderer.drawAllBalls(mTable.getBallManager().getBallList());
 
-//        i = i + 32 * elapsedTimeInSeconds;
-//        if (i > 360) {
-//            i=i-360;
-//        }
-//        mTable.getStick().setDistanceToPoint(10);
-//        mTable.getStick().setRelativePosition(new PointF(795, 300));
         if (mTable.getStick().isActive()) {
             mRenderer.drawImage(mImgStick, mTable.getStick().getPosition(), mStickScale,
                     mTable.getStick().getAngleCW(), mTable.getStick().getTargetPosition());

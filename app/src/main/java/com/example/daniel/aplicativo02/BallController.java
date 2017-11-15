@@ -2,6 +2,7 @@ package com.example.daniel.aplicativo02;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
  */
 
 public class BallController extends GestureDetector.SimpleOnGestureListener {
+    public static final String TAG = "swipe2";
     private GestureDetector mGestureDetector;
     private View02          mView;
     private BallTable       mTable;
@@ -22,6 +24,7 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
 
     public BallController(Context context, View02 view) {
         mGestureDetector = new GestureDetector(context, this);
+        mGestureDetector.setIsLongpressEnabled(false);
         mView = view;
     }
 
@@ -35,12 +38,14 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
     }
 
     public boolean onUp(MotionEvent event) {
+        Log.d(TAG, "onUp");
         mTable.setIsPressed(false);
         return true;
     }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Log.d(TAG, "onScroll");
         if (mTable.isPressed()) {
             mTable.moveBall(-distanceX, -distanceY);
         }
@@ -49,6 +54,7 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.d(TAG, "onFling");
         if (mWasPressed) {
             mTempVelocity.set(velocityX, velocityY);
 //            mTable.setBallVelocity(mTempVelocity);
@@ -63,6 +69,7 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onDown(MotionEvent e) {
+        Log.d(TAG, "onDown");
         mTable = mView.getTable();
         mTempPosition.set(e.getX(), e.getY());
         if (mTable.IsPressed(mTempPosition)) {
@@ -76,5 +83,10 @@ public class BallController extends GestureDetector.SimpleOnGestureListener {
             mWasPressed = false;
         }
         return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Log.d(TAG, "onLongPress");
     }
 }

@@ -3,6 +3,7 @@ package com.example.daniel.aplicativo02.pool;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -11,6 +12,8 @@ import android.view.MotionEvent;
  */
 
 public class PoolInputManager extends GestureDetector.SimpleOnGestureListener{
+    public static final String TAG = "Pool";
+
     private GestureDetector mGestureDetector;
     private PoolView        mView;
     private PoolTable       mTable;
@@ -28,6 +31,7 @@ public class PoolInputManager extends GestureDetector.SimpleOnGestureListener{
 
     public PoolInputManager(Context context, PoolView view) {
         mGestureDetector = new GestureDetector(context, this);
+        mGestureDetector.setIsLongpressEnabled(false);
         mView = view;
     }
 
